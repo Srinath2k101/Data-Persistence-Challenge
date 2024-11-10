@@ -25,7 +25,14 @@ public class MenuManager : MonoBehaviour
 
     public void PlayGame()
     {
-        GameDataManager.Instance.PlayerName = playerNameField.text;
+        if(string.IsNullOrWhiteSpace(playerNameField.text))
+        {
+            GameDataManager.Instance.PlayerName = "Player";
+        }
+        else
+        {
+            GameDataManager.Instance.PlayerName = playerNameField.text;
+        }
         Debug.Log(GameDataManager.Instance.PlayerName);
         if (GameDataManager.Instance.PlayerName != null)
         {

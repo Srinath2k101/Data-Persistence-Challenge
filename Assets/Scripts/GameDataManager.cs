@@ -5,6 +5,8 @@ public class GameDataManager : MonoBehaviour
     public static GameDataManager Instance;
 
     public string PlayerName;
+    public int HighScore = -1;
+    public bool isFirstGamePlayed = false;
 
     private void Awake()
     {
@@ -14,5 +16,7 @@ public class GameDataManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+
+
 }
     
