@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -26,9 +28,12 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(GameDataManager.Instance.HighScore != -1 && GameDataManager.Instance.isFirstGamePlayed)
+        if(GameDataManager.Instance != null)
         {
-            UpdateHighScoreBoard();
+            if (GameDataManager.Instance.HighScore != -1 && GameDataManager.Instance.isFirstGamePlayed)
+            {
+                UpdateHighScoreBoard();
+            }
         }
         
         const float step = 0.6f;
@@ -86,12 +91,13 @@ public class MainManager : MonoBehaviour
         }
         UpdateHighScore();
         UpdateHighScoreBoard();
+        GameDataManager.Instance.SaveGameData();
         
     }
 
     void UpdateHighScoreBoard()
     {
-        highScoreText.text = $"Best Score : {GameDataManager.Instance.PlayerName} : {GameDataManager.Instance.HighScore}";
+        highScoreText.text = $"Best Score : {GameDataManager.Instance.HighScoreHolder} : {GameDataManager.Instance.HighScore}";
     }
 
     void UpdateHighScore()
@@ -99,7 +105,23 @@ public class MainManager : MonoBehaviour
         if(GameDataManager.Instance.HighScore < m_Points)
         {
             GameDataManager.Instance.HighScore = m_Points;
+            GameDataManager.Instance.HighScoreHolder = GameDataManager.Instance.PlayerName;
         }
+    }
+
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
+
+    }
+
+    public void GoHome()
+    {
+        SceneManager.LoadScene(0);
     }
 
 }

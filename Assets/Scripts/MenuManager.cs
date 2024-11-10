@@ -9,10 +9,15 @@ public class MenuManager : MonoBehaviour
 {
 
     public TMP_InputField playerNameField;
+    public TextMeshProUGUI bestScoreText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        GameDataManager.Instance.LoadGameData();
+        if(!string.IsNullOrWhiteSpace(GameDataManager.Instance.HighScoreHolder))
+        {
+            bestScoreText.text = $"Best Score \n {GameDataManager.Instance.HighScoreHolder} : {GameDataManager.Instance.HighScore}";
+        }
     }
 
     // Update is called once per frame
@@ -48,5 +53,6 @@ public class MenuManager : MonoBehaviour
 #else
         Application.Quit();
 #endif
+        GameDataManager.Instance.SaveGameData();
     }
 }
